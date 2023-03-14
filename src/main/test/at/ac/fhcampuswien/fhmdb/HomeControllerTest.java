@@ -27,8 +27,8 @@ class HomeControllerTest {
     @Test
     void if_not_yet_sorted_sort_is_applied_in_ascending_order() {
         // given
-        homeController.initializeState();
         homeController.sortedState = SortedState.NONE;
+        homeController.setMovieList(Movie.initializeMovies());
 
         // when
         homeController.sortMovies();
@@ -65,7 +65,7 @@ class HomeControllerTest {
     @Test
     void if_last_sort_ascending_next_sort_should_be_descending() {
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         homeController.sortedState = SortedState.ASCENDING;
 
         // when
@@ -101,7 +101,7 @@ class HomeControllerTest {
     @Test
     void if_last_sort_descending_next_sort_should_be_ascending() {
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         homeController.sortedState = SortedState.DESCENDING;
 
         // when
@@ -139,7 +139,7 @@ class HomeControllerTest {
     @Test
     void query_filter_matches_with_lower_and_uppercase_letters(){
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         String query = "IfE";
 
         // when
@@ -163,7 +163,7 @@ class HomeControllerTest {
     @Test
     void query_filter_with_null_movie_list_throws_exception(){
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         String query = "IfE";
 
         // when and then
@@ -173,7 +173,7 @@ class HomeControllerTest {
     @Test
     void query_filter_with_null_value_returns_unfiltered_list() {
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         String query = null;
 
         // when
@@ -186,7 +186,7 @@ class HomeControllerTest {
     @Test
     void genre_filter_with_null_value_returns_unfiltered_list() {
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         Genre genre = null;
 
         // when
@@ -199,7 +199,7 @@ class HomeControllerTest {
     @Test
     void genre_filter_returns_all_movies_containing_given_genre() {
         // given
-        homeController.initializeState();
+        homeController.setMovieList(Movie.initializeMovies());
         Genre genre = Genre.DRAMA;
 
         // when
@@ -212,7 +212,8 @@ class HomeControllerTest {
     @Test
     void no_filtering_ui_if_empty_query_or_no_genre_is_set() {
         // given
-        homeController.initializeState();
+        homeController.setMovies(Movie.initializeMovies());
+        homeController.setMovieList(Movie.initializeMovies());
 
         // when
         homeController.applyAllFilters("", null);
