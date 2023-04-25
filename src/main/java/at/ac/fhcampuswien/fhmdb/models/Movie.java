@@ -18,6 +18,11 @@ public class Movie {
     private final List<String> mainCast = new ArrayList<>();
     private double rating; // 0-10
 
+    @Override
+    public String toString() {
+        return this.title;
+    }
+
     public Movie(String title, String description, List<Genre> genres) {
         this.id = UUID.randomUUID().toString();
         this.title = title;

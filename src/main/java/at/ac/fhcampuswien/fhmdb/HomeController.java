@@ -59,6 +59,24 @@ public class HomeController implements Initializable {
         setMovies(result);
         setMovieList(result);
         sortedState = SortedState.NONE;
+
+        // test stream methods
+        System.out.println("getMostPopularActor");
+        System.out.println(getMostPopularActor(allMovies));
+
+        System.out.println("getLongestMovieTitle");
+        System.out.println(getLongestMovieTitle(allMovies));
+
+        System.out.println("count movies from Zemeckis");
+        System.out.println(countMoviesFrom(allMovies, "Robert Zemeckis"));
+
+        System.out.println("count movies from Steven Spielberg");
+        System.out.println(countMoviesFrom(allMovies, "Steven Spielberg"));
+
+        System.out.println("getMoviewsBetweenYears");
+        List<Movie> between = getMoviesBetweenYears(allMovies, 1994, 2000);
+        System.out.println(between.size());
+        System.out.println(between.stream().map(Objects::toString).collect(Collectors.joining(", ")));
     }
 
     public void initializeLayout() {
@@ -100,14 +118,22 @@ public class HomeController implements Initializable {
         observableMovies.clear();
         observableMovies.addAll(movies);
     }
+
+    public void sortMovies(){
+        if (sortedState == SortedState.NONE || sortedState == SortedState.DESCENDING) {
+            sortMovies(SortedState.ASCENDING);
+        } else if (sortedState == SortedState.ASCENDING) {
+            sortMovies(SortedState.DESCENDING);
+        }
+    }
     // sort movies based on sortedState
     // by default sorted state is NONE
     // afterwards it switches between ascending and descending
-    public void sortMovies() {
-        if (sortedState == SortedState.NONE || sortedState == SortedState.DESCENDING) {
+    public void sortMovies(SortedState sortDirection) {
+        if (sortDirection == SortedState.ASCENDING) {
             observableMovies.sort(Comparator.comparing(Movie::getTitle));
             sortedState = SortedState.ASCENDING;
-        } else if (sortedState == SortedState.ASCENDING) {
+        } else {
             observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
             sortedState = SortedState.DESCENDING;
         }
@@ -164,11 +190,10 @@ public class HomeController implements Initializable {
 
         List<Movie> movies = getMovies(searchQuery, genre, releaseYear, ratingFrom);
         setMovies(movies);
+        setMovieList(movies);
         // applyAllFilters(searchQuery, genre);
 
-        if(sortedState != SortedState.NONE) {
-            sortMovies();
-        }
+        sortMovies(sortedState);
     }
 
     public String validateComboboxValue(Object value) {
